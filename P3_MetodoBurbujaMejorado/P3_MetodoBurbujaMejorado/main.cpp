@@ -13,6 +13,23 @@ typedef int tLista[N];
 
 void resolver(tLista lista, int total) {
 
+	bool inter = true;
+	int i = 0;
+	while ((i < total - 1) && inter) {
+		inter = false;
+		for (int j = total - 1; j > i; --j) {
+			if (lista[j] < lista[j - 1]) {
+				int tmp;
+				tmp = lista[j];
+				lista[j] = lista[j - 1];
+				lista[j - 1] = tmp;
+				inter = true;
+			}
+		}
+		if (inter)
+			++i;
+	}
+
 }
 
 void resuelveCaso() {
@@ -39,7 +56,7 @@ void resuelveCaso() {
 int main() {
 
 #ifndef DOMJUDGE
-	std::ifstream in("datos.in");
+	std::ifstream in("sample-03.1.in");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
 	std::ofstream out("datos.out");
 	auto coutbuf = std::cout.rdbuf(out.rdbuf());

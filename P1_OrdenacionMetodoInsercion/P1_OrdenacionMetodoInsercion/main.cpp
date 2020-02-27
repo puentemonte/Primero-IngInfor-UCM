@@ -1,7 +1,7 @@
 // Autora: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador y S.O. utilizado: VS 2019
-// Nombre del problema:
+// Nombre del problema: Ordenar secuencias por el método de inserción
 
 #include <iostream>
 #include <fstream>
@@ -12,6 +12,20 @@ const int N = 100;
 typedef int tLista[N];
 
 void resolver(tLista lista, int total) {
+
+	int nuevo, pos;
+	for (int i = 1; i < total; ++i) {
+		nuevo = lista[i];
+		pos = 0;
+		while ((pos < i) && !(lista[pos] > nuevo)) {
+			++pos;
+		}
+
+		for (int j = i; j > pos; --j) {
+			lista[j] = lista[j - 1];
+		}
+		lista[pos] = nuevo;
+	}
 
 }
 
@@ -30,16 +44,19 @@ void resuelveCaso() {
 	resolver(lista, i);
 
 	for (int j = 0; j < i; ++j) {
+	
 		cout << lista[j] << " ";
+
 	}
+
 	cout << endl;
 
 }
 
 int main() {
-
+	// ajustes para que cin extraiga directamente de un fichero
 #ifndef DOMJUDGE
-	std::ifstream in("datos.in");
+	std::ifstream in("sample-01.1.in");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
 	std::ofstream out("datos.out");
 	auto coutbuf = std::cout.rdbuf(out.rdbuf());
@@ -56,6 +73,5 @@ int main() {
 	std::cout.rdbuf(coutbuf);
 	system("PAUSE");
 #endif
-	return 0;
 	return 0;
 }

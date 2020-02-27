@@ -9,20 +9,24 @@
 using namespace std;
 
 const int N = 100;
-typedef int tLista[N];
+typedef int tElemento[N][N];
+typedef struct {
+	int fila, col;
+	tElemento elem;
+}tMatriz;
 
-void resolver(tLista lista, int total) {
+void resolver(tMatriz m, int total) {
 
 }
 
 void resuelveCaso() {
 
-	tLista lista;
-	int num, i = 0;
+	tMatriz m;
+	int num, i, j = 0;
 
 	cin >> num;
 	while (num != 0) {
-		lista[i] = num;
+		m.elem[i][j] = num;
 		++i;
 		cin >> num;
 	}
@@ -56,6 +60,5 @@ int main() {
 	std::cout.rdbuf(coutbuf);
 	system("PAUSE");
 #endif
-	return 0;
 	return 0;
 }

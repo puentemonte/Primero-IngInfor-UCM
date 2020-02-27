@@ -1,0 +1,9 @@
+PUTA PRÁCTICA FP
+
+	*MÓDULOS*
+
+- mina.h & mina.cpp
+- juego.h & juego.cpp
+- además de main.cpp
+
+-> visualizar diferentes estados de una matriz
