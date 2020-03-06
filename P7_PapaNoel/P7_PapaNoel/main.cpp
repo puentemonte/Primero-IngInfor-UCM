@@ -9,55 +9,89 @@
 using namespace std;
 
 const int N = 100;
-typedef int tElemento[N][N];
 typedef struct {
 	int fila, col;
-	tElemento elem;
+	int elem[N][N];
+
 }tMatriz;
 
-void resolver(tMatriz m, int total) {
-
+istream& operator>>(istream& in, tMatriz& m) {
+	in >> m.fila >> m.col;
+	for (int i = 0; i < m.fila; ++i) {
+		for (int j = 0; j < m.col; ++j) {
+			in >> m.elem[i][j];
+		}
+	}
+	return in;
 }
 
-void resuelveCaso() {
+ostream& operator<<(ostream& out, tMatriz& m) {
+	for (int i = 0; i < m.fila; ++i) {
+		for (int j = 0; j < m.col; ++j) {
+			out << m.elem[i][j] << " ";
+		}
+		out << endl;
+	}
+	return out;
+}
 
-	tMatriz m;
-	int num, i, j = 0;
+tMatriz operator*(const tMatriz& m1, const tMatriz& m2) {
+	tMatriz mResul;
 
-	cin >> num;
-	while (num != 0) {
-		m.elem[i][j] = num;
-		++i;
-		cin >> num;
+	//inicializamos la matriz resultado
+	mResul.fila = m1.fila;
+	mResul.col = m2.col;
+
+	//coger una fila y multiplicarla por todas las columnas
+	//a su vez coger todos los elementos de esa fila y columnas y multiplicarlos
+	for(int i = 0; i < m1.fila; ++i){
+		for (int j = 0; j < m2.col; ++j) {
+			int aux = 0;
+			for (int k = 0; k < m1.col; ++k) {
+				aux += m1.elem[i][k] * m2.elem[k][j];
+			}
+			mResul.elem[i][j] = aux;
+		}
 	}
 
-	resolver(lista, i);
+	return mResul;
+}
 
-	for (int j = 0; j < i; ++j) {
-		cout << lista[j] << " ";
-	}
-	cout << endl;
+tMatriz resolver(const tMatriz &m1, const tMatriz &m2) {
+	return m1 * m2;
+}
+
+bool resuelveCaso() {
+
+	tMatriz m1, m2, sol;
+	//lectura de datos
+	cin >> m1 >> m2;
+	//final de lectura
+	if (!std::cin) 
+		return false;
+	
+	sol = resolver(m1, m2);
+
+	cout << sol << endl;
+
+	return true;
 
 }
 
 int main() {
-
+	// ajustes para que cin extraiga directamente de un fichero
 #ifndef DOMJUDGE
-	std::ifstream in("datos.in");
+	std::ifstream in("sample-07.1.in");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
 	std::ofstream out("datos.out");
 	auto coutbuf = std::cout.rdbuf(out.rdbuf());
 #endif
 
-	int numCasos;
-	std::cin >> numCasos;
-	for (int i = 0; i < numCasos; ++i)
-		resuelveCaso();
+	while (resuelveCaso());
 
 	// para dejar todo como estaba al principio
 #ifndef DOMJUDGE
 	std::cin.rdbuf(cinbuf);
-	std::cout.rdbuf(coutbuf);
 	system("PAUSE");
 #endif
 	return 0;

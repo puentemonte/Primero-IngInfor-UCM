@@ -39,6 +39,8 @@ int main() {
 #ifndef DOMJUDGE
    std::ifstream in("casos.txt");
    auto cinbuf = std::cin.rdbuf(in.rdbuf());
+   std::ofstream out("datos.out");
+   auto coutbuf = std::cout.rdbuf(out.rdbuf());
 #endif
    
    while (resuelveCaso());
