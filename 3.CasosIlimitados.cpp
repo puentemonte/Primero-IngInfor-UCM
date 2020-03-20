@@ -1,10 +1,7 @@
-
 // Autor/a: Nombre y apellidos
 // email:
 // Compilador y S.O. utilizado
 // Nombre del problema
-// Comentario general sobre la solución
-// explicando cómo se resuelve el problema
 
 #include <iostream>
 #include <fstream>

@@ -11,22 +11,31 @@ typedef struct {
 
 bool esPunto(const tMatriz& m, int numFila, int numCol) {
 
-	bool esPunto = true, mayorFila = true, menorFila = true, mayorCol = true, menorCol = true;
+	bool esPunto = false, mayorFila = true, menorFila = true, mayorCol = true, menorCol = true;
 	int i = 0, j = 0;
 
-	while(i < m.col){
+	while (i < m.col && mayorFila) {
 		mayorFila = m.elem[numFila][numCol] >= m.elem[numFila][i];
+		++i;
+	}
+	i = 0;
+	while (i < m.col && menorFila) {
 		menorFila = m.elem[numFila][numCol] <= m.elem[numFila][i];
 		++i;
 	}
-	while (j < m.fila) {
-		menorCol = m.elem[numFila][numCol] <= m.elem[j][numCol];
+
+	while (j < m.fila && mayorCol) {
 		mayorCol = m.elem[numFila][numCol] >= m.elem[j][numCol];
 		++j;
 	}
+	j = 0;
+	while (j < m.fila && menorCol) {
+		menorCol = m.elem[numFila][numCol] <= m.elem[j][numCol];
+		++j;
+	}
 
-	if ((!mayorFila && !menorCol) && (!menorFila && !mayorCol))
-		esPunto = false;
+	if((mayorFila && menorCol) || (menorFila && mayorCol))
+		esPunto = true;
 
 	return esPunto;
 }
@@ -72,7 +81,7 @@ bool resuelveCaso() {
 	// escribir sol
 	if (sol)
 		cout << "SI\n";
-	else
+	else if (!sol)
 		cout << "NO\n";
 
 	return true;

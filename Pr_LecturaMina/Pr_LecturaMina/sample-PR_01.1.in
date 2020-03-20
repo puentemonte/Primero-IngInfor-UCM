@@ -1,0 +1,84 @@
+5
+1 2
+7 10
+GM-J-MMMMM
+GM---MMTGT
+TM-G-MMTTT
+GTTG--MTTT
+TTTTTTTTTT
+TGTTMGTMST
+TTTTMTTMTT
+2 2
+7 10
+JMGMMMMMMM
+-MGMGTTMTS
+-MGMMMTTTT
+--GP-MMPMM
+TTTP-TTTTT
+TGTP-TTGTT
+TTTP-TTTTT
+1 2
+6 7
+-JPPSTT
+TPTMTTT
+GP-MTTG
+TM-MTTT
+TM-MTTT
+TM-MTTT
+2 2
+6 7
+PJTPPPP
+TPTMPPP
+TP-MPPP
+MMGTTTT
+MMMMMMT
+MMMMSTT
+1 2
+5 2
+ST
+MT
+TT
+TM
+TJ
+
+
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include "mina.h"
+
+
+// Resuelve un caso de prueba, leyendo de la entrada la
+// configuración, y escribiendo la respuesta
+void resuelveCaso() {
+    int escala; std::cin >> escala;
+    int teclado; std::cin >> teclado;
+    tMina mina;
+    cargar_mina(std::cin, mina);
+    if (escala == 1) dibujar1_1(mina);
+    else dibujar3_1(mina);
+}
+
+int main() {
+    
+#ifndef DOMJUDGE
+    std::ifstream in("datos.txt");
+    auto cinbuf = std::cin.rdbuf(in.rdbuf()); //save old buf and redirect std::cin to casos.txt
+#endif
+    
+    int numCasos; std::cin >> numCasos; std::cin.ignore();
+    for (int i = 0; i < numCasos; ++i) {resuelveCaso();}
+    
+#ifndef DOMJUDGE // para dejar todo como estaba al principio
+    std::cin.rdbuf(cinbuf);
+#endif
+    
+    return 0;
+}
+
+
+
+
+
