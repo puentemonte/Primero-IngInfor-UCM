@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{28C928CB-F5DD-4310-A4C8-3EC190AF6714}</ProjectGuid>
-    <RootNamespace>PrExplorandoLaMina</RootNamespace>
+    <ProjectGuid>{F357342E-3C04-4975-92B6-418034C6FB0E}</ProjectGuid>
+    <RootNamespace>P124enLinea</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,13 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="juego.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mina.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="juego.h" />
-    <ClInclude Include="mina.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,7 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador y S.O. utilizado: Microsoft Visual Studio 2019
-// Nombre del problema: Explorando la mina
+// Nombre del problema: Desprendimiento piedras
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -9,7 +9,7 @@
 #include <utility>
 using namespace std;
 
-enum tElemento { TIERRA, PIEDRA, MURO, GEMA, SALIDA, LIBRE, MINERO };
+typedef enum tElemento { TIERRA, PIEDRA, MURO, GEMA, SALIDA, LIBRE, MINERO };
 const int DIM = 50;
 typedef tElemento tPlano[DIM][DIM];
 typedef struct {

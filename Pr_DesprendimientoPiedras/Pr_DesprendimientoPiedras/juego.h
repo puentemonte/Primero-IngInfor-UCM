@@ -1,16 +1,16 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador y S.O. utilizado: Microsoft Visual Studio 2019
-// Nombre del problema: Explorando la mina
+// Nombre del problema: Desprendimiento piedras
 #pragma once
 #include "mina.h"
 using namespace std;
 
-enum tTecla{ARRIBA, ABAJO, DCHA, IZDA, SALIR};
-enum tEstado{EXPLORANDO, EXITO, ABANDONO, FRACASO};
+typedef enum tTecla { ARRIBA, ABAJO, DCHA, IZDA, SALIR };
+typedef enum tEstado { EXPLORANDO, EXITO, ABANDONO, FRACASO };
 typedef struct {
 	tMina mina;
-	int gemasRecogidas, numMovimientos, escala, introMovimientos;
+	int gemasRecogidas = 0, numMovimientos = 0, escala, introMovimientos;
 	tEstado estadoMinero;
 }tJuego;
 
@@ -29,3 +29,12 @@ void realizarMovimiento(tJuego& juego, tTecla mov);
 void dibujar(tJuego const& juego);
 
 void jugar(tJuego& juego, istream& entrada, istream& movimientos);
+
+//pone LIBRE en la posición x y 
+//pone PIEDRA en la siguiente posición
+void caidaPiedra(tMina& mina, int x, int y);
+
+//mientras en la posición actual haya una piedra y esté dentro del plano
+//mientras la siguiente posición sea LIBRE y esté dentro del plano
+//llama a la función caidaPiedra
+void cascadaPiedra(tMina& mina, int x, int y);

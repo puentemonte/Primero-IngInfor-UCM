@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{28C928CB-F5DD-4310-A4C8-3EC190AF6714}</ProjectGuid>
-    <RootNamespace>PrExplorandoLaMina</RootNamespace>
+    <ProjectGuid>{11965B2E-0A39-4F36-A5A8-A97C7E29C673}</ProjectGuid>
+    <RootNamespace>PrMinero</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

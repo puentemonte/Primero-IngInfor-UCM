@@ -1,12 +1,41 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador y S.O. utilizado: Microsoft Visual Studio 2019
-// Nombre del problema: Explorando la mina
+// Nombre del problema: Desprendimiento piedras
+/*
+Implementación de la solución:
+Mientras haya una PIEDRA en la posición actual y estemos dentro del plano
+	Mientras la siguiente posición esté LIBRE y estemos dentro del plano
+		Poner LIBRE en la posición actual
+		Poner la PIEDRA en la siguiente fila (pero la misma columna)
+*/
 #include "juego.h"
 using namespace std;
 
 const int NUM_DIRECCIONES = 4;
 const pair<int, int> tdirs4[NUM_DIRECCIONES] = { {-1,0},{1,0},{0,1},{0,-1} };
+
+void caidaPiedra(tMina& mina, int x, int y, tElemento ELEMENTO) {
+	
+	mina.plano[x][y] = LIBRE;
+	mina.plano[x + 1][y] = ELEMENTO;
+
+}
+
+void cascadaPiedra(tMina& mina, int x, int y) {
+
+	while ((mina.plano[x][y] == PIEDRA || mina.plano[x][y] == GEMA) && dentroPlano(mina, x, y)) {
+		//x + 1 indicando la posición de abajo, en la que hay que comprobar si está libre
+		while (mina.plano[x + 1][y] == LIBRE && dentroPlano(mina, x + 1, y)) {
+			//comprobamos si lo que cae es una PIEDRA o una GEMA
+			if (mina.plano[x][y] == PIEDRA)
+				caidaPiedra(mina, x, y, PIEDRA);
+			else
+				caidaPiedra(mina, x, y, GEMA);
+		}
+	}
+
+}
 
 istream& operator>> (istream& movimientos, tTecla& tecla) {
 	char c;
@@ -83,10 +112,12 @@ void realizarMovimiento(tJuego& juego, tTecla mov) {
 					//actualizamos la información del minero
 					juego.mina.filaMinero = destinoX;
 					juego.mina.colMinero = destinoY;
-					//movemos la PIEDRA donde antes estaba LIBRE
-					juego.mina.plano[destinoX + tdirs4[mov].first][destinoY + tdirs4[mov].second] = PIEDRA;
 					//movemos MINERO donde antes estaba la PIEDRA
 					juego.mina.plano[destinoX][destinoY] = MINERO;
+					//movemos la PIEDRA donde antes estaba LIBRE
+					juego.mina.plano[destinoX + tdirs4[mov].first][destinoY + tdirs4[mov].second] = PIEDRA;
+					//llamamos a la función cascada para que la piedra caiga
+					cascadaPiedra(juego.mina, destinoX + tdirs4[mov].first, destinoY + tdirs4[mov].second);
 				}
 			}
 			break;

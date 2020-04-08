@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{28C928CB-F5DD-4310-A4C8-3EC190AF6714}</ProjectGuid>
-    <RootNamespace>PrExplorandoLaMina</RootNamespace>
+    <ProjectGuid>{27DB5F07-1F58-4CE2-A08F-43ABE09281D5}</ProjectGuid>
+    <RootNamespace>PrDesprendimientoPiedras</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

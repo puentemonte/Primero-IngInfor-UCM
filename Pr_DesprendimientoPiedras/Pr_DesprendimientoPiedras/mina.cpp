@@ -1,7 +1,7 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador y S.O. utilizado: Microsoft Visual Studio 2019
-// Nombre del problema: Explorando la mina
+// Nombre del problema: Desprendimiento piedras
 #include "mina.h"
 using namespace std;
 
