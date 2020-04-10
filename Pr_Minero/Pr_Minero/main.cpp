@@ -3,31 +3,36 @@
 
 int main() {
 
-	ifstream archivo;
+	ifstream archivo, movimientos;
 	tJuego juego;
 	int escala, introMovimientos;
+	string nombreFicheroMovimientos;
 
 	// si el jugador escoge la opción salir, el programa finaliza
 	if (menuEscala(juego) == 3)
 		return 0;
-	if (menuMovimientos(juego) == 0)
+	if (menuMovimientos(juego, nombreFicheroMovimientos) == 0)
 		return 0;
-
 
 	if (!cargarJuego(juego, juego.nivel))
 		cout << "El archivo no pudo ser abierto.\n";
 	else
 		dibujar(juego);
 
+	movimientos.open(nombreFicheroMovimientos);
+
 	while (juego.nivel < 5) {
 		while (juego.estadoMinero != EXITO) {
-			hacerMovimiento(juego, leerTecla());
+			leerMovimiento(juego, movimientos);
 			dibujar(juego);
 		}
-		++juego.nivel;
+		system("cls");
+		if (menuNivel(juego) == 0)
+			return 0;
 		cargarJuego(juego, juego.nivel);
 		dibujar(juego);
 	}
 	
+	movimientos.close();
 	
 }

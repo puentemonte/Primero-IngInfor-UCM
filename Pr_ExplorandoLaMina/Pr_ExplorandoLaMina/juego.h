@@ -4,7 +4,6 @@
 // Nombre del problema: Explorando la mina
 #pragma once
 #include "mina.h"
-using namespace std;
 
 enum tTecla{ARRIBA, ABAJO, DCHA, IZDA, SALIR};
 enum tEstado{EXPLORANDO, EXITO, ABANDONO, FRACASO};
@@ -29,3 +28,5 @@ void realizarMovimiento(tJuego& juego, tTecla mov);
 void dibujar(tJuego const& juego);
 
 void jugar(tJuego& juego, istream& entrada, istream& movimientos);
+
+void inicializar_mina(tMina& mina);

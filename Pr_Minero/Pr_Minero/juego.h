@@ -15,10 +15,13 @@ typedef struct {
 
 //menu del juego
 int menuEscala(tJuego& juego);
-int menuMovimientos(tJuego& juego);
+int menuMovimientos(tJuego& juego, string& ficheroMovimientos);
+int menuNivel(tJuego& juego);
 
-//leer tecla desde el teclado
+//leer tecla
 tTecla leerTecla();
+istream& operator>> (istream& movimientos, tTecla& tecla);
+void leerMovimiento(tJuego& juego, ifstream& movimientos);
 
 //carga el juego del nivel indicado
 //inicializa el juego y carga la mina, y si la mina no se pudo cargar devuelve falso
@@ -37,5 +40,4 @@ void hacerMovimiento(tJuego& juego, tTecla tecla);
 void caidaPiedra(tJuego& juego, int f, int c);
 
 //hace que la dinamita caiga y explota
-//devuelve true si el minero muere
-bool caidaDinamita(tJuego& juego);
+void lanzamientoDinamita(tJuego& juego);

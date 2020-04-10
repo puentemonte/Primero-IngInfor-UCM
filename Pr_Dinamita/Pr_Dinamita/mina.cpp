@@ -1,8 +1,9 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador y S.O. utilizado: Microsoft Visual Studio 2019
-// Nombre del problema: Explorando la mina
+// Nombre del problema: Desprendimiento piedras
 #include "mina.h"
+using namespace std;
 
 tElemento char2elem(char c) {
 
@@ -155,5 +156,5 @@ void dibujar3_1(tMina const& mina) {
 }
 
 bool dentroPlano(const tMina& mina, int x, int y) {
-	return (x >= 0 && x <= mina.fila && y >= 0 && y <= mina.col);
+	return (x >= 0 && x < mina.fila && y >= 0 && y < mina.col);
 }

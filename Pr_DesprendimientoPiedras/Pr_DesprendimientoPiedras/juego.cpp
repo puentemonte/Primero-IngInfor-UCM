@@ -15,28 +15,6 @@ using namespace std;
 const int NUM_DIRECCIONES = 4;
 const pair<int, int> tdirs4[NUM_DIRECCIONES] = { {-1,0},{1,0},{0,1},{0,-1} };
 
-void caidaPiedra(tMina& mina, int x, int y, tElemento ELEMENTO) {
-	
-	mina.plano[x][y] = LIBRE;
-	mina.plano[x + 1][y] = ELEMENTO;
-
-}
-
-void cascadaPiedra(tMina& mina, int x, int y) {
-
-	while ((mina.plano[x][y] == PIEDRA || mina.plano[x][y] == GEMA) && dentroPlano(mina, x, y)) {
-		//x + 1 indicando la posición de abajo, en la que hay que comprobar si está libre
-		while (mina.plano[x + 1][y] == LIBRE && dentroPlano(mina, x + 1, y)) {
-			//comprobamos si lo que cae es una PIEDRA o una GEMA
-			if (mina.plano[x][y] == PIEDRA)
-				caidaPiedra(mina, x, y, PIEDRA);
-			else
-				caidaPiedra(mina, x, y, GEMA);
-		}
-	}
-
-}
-
 istream& operator>> (istream& movimientos, tTecla& tecla) {
 	char c;
 	movimientos >> c;
@@ -103,21 +81,22 @@ void realizarMovimiento(tJuego& juego, tTecla mov) {
 			//la posición del minero no cambia y el plano de la mina tampoco
 			break;
 		case PIEDRA:
-			//comprobamos si la dirección a la que apuntamos es una posición válida
-			if (dentroPlano(juego.mina, destinoX + tdirs4[mov].first, destinoY + tdirs4[mov].second)) {
-				//si la posición siguiente en el mismo sentido es LIBRE entonces mueve la PIEDRA
-				if (juego.mina.plano[destinoX + tdirs4[mov].first][destinoY + tdirs4[mov].second] == LIBRE) {
-					//la posición en la que estaba el minero queda libre
-					juego.mina.plano[juego.mina.filaMinero][juego.mina.colMinero] = LIBRE;
-					//actualizamos la información del minero
-					juego.mina.filaMinero = destinoX;
-					juego.mina.colMinero = destinoY;
-					//movemos MINERO donde antes estaba la PIEDRA
-					juego.mina.plano[destinoX][destinoY] = MINERO;
-					//movemos la PIEDRA donde antes estaba LIBRE
-					juego.mina.plano[destinoX + tdirs4[mov].first][destinoY + tdirs4[mov].second] = PIEDRA;
-					//llamamos a la función cascada para que la piedra caiga
-					cascadaPiedra(juego.mina, destinoX + tdirs4[mov].first, destinoY + tdirs4[mov].second);
+			// comprobamos si quiere mover una piedra hacia arriba
+			if(mov != ARRIBA){
+				//comprobamos si la dirección a la que apuntamos es una posición válida
+				if (dentroPlano(juego.mina, destinoX + tdirs4[mov].first, destinoY + tdirs4[mov].second)) {
+					//si la posición siguiente en el mismo sentido es LIBRE entonces mueve la PIEDRA
+					if (juego.mina.plano[destinoX + tdirs4[mov].first][destinoY + tdirs4[mov].second] == LIBRE) {
+						//la posición en la que estaba el minero queda libre
+						juego.mina.plano[juego.mina.filaMinero][juego.mina.colMinero] = LIBRE;
+						//actualizamos la información del minero
+						juego.mina.filaMinero = destinoX;
+						juego.mina.colMinero = destinoY;
+						//movemos MINERO donde antes estaba la PIEDRA
+						juego.mina.plano[destinoX][destinoY] = MINERO;
+						//movemos la PIEDRA donde antes estaba LIBRE
+						juego.mina.plano[destinoX + tdirs4[mov].first][destinoY + tdirs4[mov].second] = PIEDRA;
+					}
 				}
 			}
 			break;
@@ -148,6 +127,13 @@ void realizarMovimiento(tJuego& juego, tTecla mov) {
 		}
 	}
 	++juego.numMovimientos;
+	for (int i = juego.mina.fila - 1; i >= 0; --i) {
+		for (int j = juego.mina.col - 1; j >= 0; --j) {
+			if ((juego.mina.plano[i][j] == PIEDRA || juego.mina.plano[i][j] == GEMA)
+				&& juego.mina.plano[i + 1][j] == LIBRE)
+					caidaPiedra(juego, i, j);
+		}
+	}
 }
 
 void dibujar(tJuego const& juego) {
@@ -167,5 +153,37 @@ void jugar(tJuego& juego, istream& entrada, istream& movimientos) {
 	leerMovimiento(juego, tecla, movimientos);
 	while (juego.estadoMinero != ABANDONO && juego.estadoMinero != EXITO) {
 		leerMovimiento(juego, tecla, movimientos);
+	}
+}
+
+void inicializar_mina(tMina& mina) {
+	mina.fila = -1;
+	mina.col = -1;
+	mina.filaMinero = -1;
+	mina.colMinero = -1;
+	for (int i = 0; i < DIM; ++i) {
+		for (int j = 0; j < DIM; ++j) {
+			mina.plano[i][j] = NADA;
+		}
+	}
+}
+
+void caidaPiedra(tJuego& juego, int f, int c) {
+	int n = 0;
+	// mientras la posición en la que estemos haya una piedra o una gema
+	// y estemos dentro del plano
+	while ((juego.mina.plano[f + n][c] == PIEDRA || juego.mina.plano[f + n][c] == GEMA)
+		&& dentroPlano(juego.mina, f + n, c)) {
+		// mientras la siguiente posición (la de abajo) esté libre
+		// y estemos dentro del plano
+		n = 0;
+		while (juego.mina.plano[f + n + 1][c] == LIBRE && dentroPlano(juego.mina, f + n + 1, c)) {
+			// ponemos una posición más abajo la piedra/gema
+			juego.mina.plano[f + n + 1][c] = juego.mina.plano[f + n][c];
+			// ponemos libre la posición actual
+			juego.mina.plano[f + n][c] = LIBRE;
+			//dibujar(juego);
+			++n;
+		}
 	}
 }

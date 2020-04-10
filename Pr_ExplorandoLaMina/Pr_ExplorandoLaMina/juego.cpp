@@ -3,7 +3,6 @@
 // Compilador y S.O. utilizado: Microsoft Visual Studio 2019
 // Nombre del problema: Explorando la mina
 #include "juego.h"
-using namespace std;
 
 const int NUM_DIRECCIONES = 4;
 const pair<int, int> tdirs4[NUM_DIRECCIONES] = { {-1,0},{1,0},{0,1},{0,-1} };
@@ -117,6 +116,13 @@ void realizarMovimiento(tJuego& juego, tTecla mov) {
 		}
 	}
 	++juego.numMovimientos;
+	for (int i = juego.mina.fila; i >= 0; --i) {
+		for (int j = juego.mina.col; j >= 0; --j) {
+			if ((juego.mina.plano[i][j] == PIEDRA || juego.mina.plano[i][j] == GEMA)
+				&& juego.mina.plano[i + 1][j] == LIBRE)
+				caidaPiedra(juego, i, j);
+		}
+	}
 }
 
 void dibujar(tJuego const& juego) {
@@ -126,9 +132,23 @@ void dibujar(tJuego const& juego) {
 		dibujar3_1(juego.mina);
 }
 
+void inicializar_mina(tMina& mina) {
+	mina.fila = -1;
+	mina.col = -1;
+	mina.filaMinero = -1;
+	mina.colMinero = -1;
+	for (int i = 0; i < DIM; ++i) {
+		for (int j = 0; j < DIM; ++j) {
+			mina.plano[i][j] = NADA;
+		}
+	}
+}
+
 void jugar(tJuego& juego, istream& entrada, istream& movimientos) {
 	tTecla tecla;
 
+	//inicializamos el juego
+	inicializar_mina(juego.mina);
 	//carga los datos de la mina
 	cargar_mina(entrada, juego.mina);
 	//va leyendo los movimientos

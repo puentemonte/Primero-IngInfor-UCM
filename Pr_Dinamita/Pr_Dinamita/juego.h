@@ -6,13 +6,15 @@
 #include "mina.h"
 using namespace std;
 
-typedef enum tTecla { ARRIBA, ABAJO, DCHA, IZDA, SALIR };
+typedef enum tTecla { ARRIBA, ABAJO, DCHA, IZDA, SALIR, TNT };
 typedef enum tEstado { EXPLORANDO, EXITO, ABANDONO, FRACASO };
 typedef struct {
 	tMina mina;
-	int gemasRecogidas = 0, numMovimientos = 0, escala, introMovimientos;
+	int gemasRecogidas = 0, numMovimientos = 0, escala, introMovimientos, dinamitasUsadas = 0;
 	tEstado estadoMinero;
 }tJuego;
+
+void lanzamientoDinamita(tJuego& juego);
 
 //lee un movimiento y devuelve el valor del tipo enumerado correspondiente
 istream& operator>> (istream& movimientos, tTecla& tecla);

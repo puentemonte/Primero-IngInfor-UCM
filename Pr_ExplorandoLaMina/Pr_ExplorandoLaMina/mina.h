@@ -9,7 +9,7 @@
 #include <utility>
 using namespace std;
 
-enum tElemento { TIERRA, PIEDRA, MURO, GEMA, SALIDA, LIBRE, MINERO };
+enum tElemento { TIERRA, PIEDRA, MURO, GEMA, SALIDA, LIBRE, MINERO, NADA };
 const int DIM = 50;
 typedef tElemento tPlano[DIM][DIM];
 typedef struct {

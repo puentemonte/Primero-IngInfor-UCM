@@ -38,7 +38,7 @@ void resuelveCaso() {
 
 int main() {
 #ifndef DOMJUDGE
-	std::ifstream in("sample-PR_03.in");
+	std::ifstream in("sample-PR_03.2.in");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
 	std::ofstream out("datos.out");
 	auto coutbuf = std::cout.rdbuf(out.rdbuf());

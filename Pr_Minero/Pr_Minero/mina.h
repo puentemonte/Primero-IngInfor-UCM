@@ -9,7 +9,7 @@
 using namespace std;
 
 const int MAX = 50;
-typedef enum tCasilla {LIBRE, TIERRA, GEMA, PIEDRA, MURO, DINAMITA, SALIDA, MINERO};
+typedef enum tCasilla {LIBRE, TIERRA, GEMA, PIEDRA, MURO, DINAMITA, SALIDA, MINERO };
 typedef tCasilla tPlano[MAX][MAX];
 typedef struct {
 	tPlano plano;
