@@ -1,7 +1,4 @@
-//Autor/a: Estibaliz Zubimendi Solaguren
-//email: estizubi@ucm.es
-//Compilador: Visual Studio 2019
-//Nombre del problema: 4 en línea
+
 #include <iostream>
 #include <fstream>
 
@@ -14,84 +11,67 @@ const int FILA = 6;
 // 0 NADIE
 typedef int tMatriz[FILA][COLUMNA];
 typedef enum tVeredicto{ A, B, EMPATE };
-// array que lleva un contador de cuantas líneas se han rellenado en cada columna
+// array que lleva un contador de cuantas lÃ­neas se han rellenado en cada columna
 typedef int tColumna[COLUMNA];
 
 tVeredicto compruebaHorizontal(const tMatriz& m) {
-	tVeredicto v = EMPATE;
 	bool ganadorA, ganadorB;
-	int i = 0, j = 0;
-	while (i < FILA && v == EMPATE) {
-		j = 0;
-		while (j < COLUMNA - 3 && v == EMPATE) {
+	for (int i = 0; i < FILA; ++i) {
+		for (int j = 0; j < COLUMNA - 3; ++j) {
 			ganadorA = m[i][j] == 1 && m[i][j + 1] == 1 && m[i][j + 2] == 1 && m[i][j + 3] == 1;
 			if (ganadorA)
-				v = A;
+				return A;
 			ganadorB = m[i][j] == 2 && m[i][j + 1] == 2 && m[i][j + 2] == 2 && m[i][j + 3] == 2;
 			if (ganadorB)
-				v = B;
-			++j;
+				return B;
 		}
-		++i;
 	}
-	return v;
+	return EMPATE;
 }
+
 tVeredicto compruebaVertical(const tMatriz& m) {
-	tVeredicto v = EMPATE;
 	bool ganadorA, ganadorB;
-	int i = 0, j = 0;
-	while (j < COLUMNA && v == EMPATE) {
-		i = 0;
-		while (i < FILA - 3 && v == EMPATE) {
+	for (int j = 0; j < COLUMNA; ++j) {
+		for (int i = 0; i < FILA - 3; ++i) {
 			ganadorA = m[i][j] == 1 && m[i + 1][j] == 1 && m[i + 2][j] == 1 && m[i + 3][j] == 1;
 			if (ganadorA)
-				v = A;
+				return A;
 			ganadorB = m[i][j] == 2 && m[i + 1][j] == 2 && m[i + 2][j] == 2 && m[i + 3][j] == 2;
 			if (ganadorB)
-				v = B;
-			++i;
+				return B;
 		}
-		++j;
 	}
-	return v;
+	return EMPATE;
 }
+
 tVeredicto comprobarDiagonalIzqDer(const tMatriz& m) {
-	tVeredicto v = EMPATE;
 	bool ganadorA, ganadorB;
-	int i = 0, j = 0;
-	while (i < FILA - 3 && v == EMPATE) {
-		j = 0;
-		while (j < COLUMNA - 3 && v == EMPATE) {
+	for (int i = 0; i < FILA - 3; ++i) {
+		for (int j = 0; j < COLUMNA - 3; ++j) {
 			ganadorA = m[i][j] == 1 && m[i + 1][j + 1] == 1 && m[i + 2][j + 2] == 1 && m[i + 3][j + 3] == 1;
 			if (ganadorA)
-				v = A;
+				return A;
 			ganadorB = m[i][j] == 2 && m[i + 1][j + 1] == 2 && m[i + 2][j + 2] == 2 && m[i + 3][j + 3] == 2;
-			if (ganadorB)
-				v = B;
-			++j;
+			if(ganadorB)
+				return B;
 		}
-		++i;
 	}
-	return v;
+	return EMPATE;
 }
+
 tVeredicto comprobarDiagonalDerIzq(const tMatriz& m) {
-	tVeredicto v = EMPATE;
 	bool ganadorA, ganadorB;
-	int i = 0, j = COLUMNA - 1;
-	while (i < FILA - 3 && v == EMPATE) {
-		j = COLUMNA - 1;
-		while (j > COLUMNA - 5 && v == EMPATE) {
+	for (int i = 0; i < FILA - 3; ++i) {
+		for (int j = COLUMNA - 1; j > COLUMNA - 5; --j) {
 			ganadorA = m[i][j] == 1 && m[i + 1][j - 1] == 1 && m[i + 2][j - 2] == 1 && m[i + 3][j - 3] == 1;
 			if (ganadorA)
-				v = A;
+				return A;
 			ganadorB = m[i][j] == 2 && m[i + 1][j - 1] == 2 && m[i + 2][j - 2] == 2 && m[i + 3][j - 3] == 2;
 			if (ganadorB)
-				v = B;
-			--j;
+				return B;
 		}
-		++i;
 	}
-	return v;
+	return EMPATE;
 }
 
 tVeredicto resolver(const tMatriz &m) {
@@ -107,7 +87,7 @@ tVeredicto resolver(const tMatriz &m) {
 }
 
 // resuelve un caso de prueba, leyendo de la entrada la
-// configuración, y escribiendo la respuesta
+// configuraciÃ³n, y escribiendo la respuesta
 bool resuelveCaso() {
 	tMatriz m;
 	tColumna cont;
