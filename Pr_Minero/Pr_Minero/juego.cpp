@@ -24,6 +24,7 @@ void lanzamientoDinamita(tJuego& juego) {
 		// cae la dinamita
 		while (juego.mina.plano[f + 1][c] == LIBRE && dentroPlano(juego.mina, f + 1, c)) {
 			juego.mina.plano[f + 1][c] = DINAMITA;
+			dibujar(juego);
 			juego.mina.plano[f + 1][c] = LIBRE;
 			dibujar(juego);
 			++f;
@@ -36,9 +37,6 @@ void lanzamientoDinamita(tJuego& juego) {
 				juego.mina.plano[f + dirs8[dir].first][c + dirs8[dir].second] = LIBRE;
 			}
 		}
-		//dibujar juego
-		//hacer que las piedras caigan
-		//dibujar juego
 	}
 }
 
@@ -259,6 +257,7 @@ void hacerMovimiento(tJuego& juego, tTecla mov) {
 		lanzamientoDinamita(juego);
 	}
 	++juego.numMov;
+	// recorremos el plano para ver si hay piedras o gemas que pueden caerse
 	for (int i = juego.mina.nFilas - 1; i >= 0; --i) {
 		for (int j = juego.mina.nColumnas - 1; j >= 0; --j) {
 			if ((juego.mina.plano[i][j] == PIEDRA || juego.mina.plano[i][j] == GEMA)
@@ -365,4 +364,55 @@ void leerMovimiento(tJuego& juego, ifstream &movimientos) {
 			juego.estadoMinero = ABANDONO;
 		}
 	}
+}
+
+bool jugar(tJuego& juego) {
+	ifstream archivo, movimientos;
+	int escala, introMovimientos;
+	string nombreFicheroMovimientos;
+
+	// si el jugador escoge la opción salir, el programa finaliza
+	if (menuEscala(juego) == 3)
+		return 0;
+	if (menuMovimientos(juego, nombreFicheroMovimientos) == 0)
+		return 0;
+
+	if (!cargarJuego(juego, juego.nivel))
+		cout << "El archivo no pudo ser abierto.\n";
+	else
+		dibujar(juego);
+
+	movimientos.open(nombreFicheroMovimientos);
+
+	while (juego.nivel < 4) {
+		while (juego.estadoMinero == EXPLORANDO) {
+			dibujar(juego);
+			leerMovimiento(juego, movimientos);
+		}
+		switch (juego.estadoMinero) {
+		case EXITO:
+			system("cls");
+			if (menuNivel(juego) == 0)
+				return 0;
+			if (menuEscala(juego) == 3)
+				return 0;
+			if (menuMovimientos(juego, nombreFicheroMovimientos) == 0)
+				return 0;
+			cargarJuego(juego, juego.nivel);
+			dibujar(juego);
+			break;
+		case ABANDONO:
+		case FRACASO:
+			return 0;
+		}
+	} 
+	if (juego.nivel == 4) {
+		cargarJuego(juego, juego.nivel);
+		while (juego.estadoMinero == EXPLORANDO) {
+			leerMovimiento(juego, movimientos);
+			dibujar(juego);
+		}
+	}
+	movimientos.close();
+	return false;
 }

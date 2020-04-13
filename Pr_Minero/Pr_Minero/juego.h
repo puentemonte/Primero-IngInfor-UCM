@@ -41,3 +41,6 @@ void caidaPiedra(tJuego& juego, int f, int c);
 
 //hace que la dinamita caiga y explota
 void lanzamientoDinamita(tJuego& juego);
+
+// función que gestiona un juego
+bool jugar(tJuego& juego);

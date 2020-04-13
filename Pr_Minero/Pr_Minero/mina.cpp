@@ -104,7 +104,7 @@ void dibujar1_1(const tMina& mina) {
 				break;
 			case DINAMITA:
 				plano_caracteres[i][j] = 'D';
-				plano_caracteres[i][j] = 9;
+				plano_colores[i][j] = 9;
 				break;
 			case SALIDA:
 				plano_caracteres[i][j] = 'S';
@@ -245,5 +245,5 @@ void dibujar1_3(const tMina& mina) {
 }
 
 bool dentroPlano(const tMina& mina, int x, int y) {
-	return (x >= 0 && x <= mina.nFilas && y >= 0 && y <= mina.nColumnas);
+	return (x >= 0 && x < mina.nFilas && y >= 0 && y < mina.nColumnas);
 }

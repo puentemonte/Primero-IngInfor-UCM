@@ -37,6 +37,7 @@ void dibuja3x3(tCasilla casilla, tPlanoCaracteres &caracteres, tPlanoColores &co
 //asignar color al fondo
 void colorFondo(int color);
 
+// para los elementos que tienen el mismo color de fondo, les asigna un char y el color
 void caracter_color(tCasilla casilla, char& caracter, int& numColor);
 
 //comprueba si una posición está dentro del plano
