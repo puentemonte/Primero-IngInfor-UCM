@@ -1,8 +1,18 @@
+// Autor/a: Estibaliz Zubimendi Solaguren
+// email: estizubi@ucm.es
+// Compilador: Visual Studio 2019
+// Nombre del problema: Práctica minero V1
 #include "mina.h"
+
+void inicializarMina(tMina& mina) {
+	for (int i = 0; i < MAX; ++i) 
+		for (int j = 0; j < MAX; ++j) 
+			mina.plano[i][j] = VACIO;
+}
 
 tCasilla char2elem(char c) {
 
-	tCasilla elem;
+	tCasilla elem = LIBRE;
 
 	switch (c)
 	{
@@ -36,6 +46,8 @@ tCasilla char2elem(char c) {
 };
 
 void cargar_mina(ifstream& fichero, tMina& mina) {
+	// inicializamos la mina
+	inicializarMina(mina);
 
 	char c, aux;
 

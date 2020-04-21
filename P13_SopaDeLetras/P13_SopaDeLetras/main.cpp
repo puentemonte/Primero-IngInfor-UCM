@@ -10,8 +10,8 @@
 using namespace std;
 const int MAX = 50;
 typedef struct {
-	char c = ' ';
-	bool sol = false;
+	char c;
+	bool sol;
 }tCasilla;
 typedef tCasilla tArray[MAX][MAX];
 typedef struct {
@@ -20,6 +20,15 @@ typedef struct {
 }tMatriz;
 const int NUM_DIRECCIONES = 8;
 const pair<int, int>dirs8[NUM_DIRECCIONES] = { {1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1} };
+
+void inicializar(tMatriz& m) {
+	for (int i = 0; i < MAX; ++i) {
+		for (int j = 0; j < MAX; ++j) {
+			m.matriz[i][j].c = ' ';
+			m.matriz[i][j].sol = false;
+		}
+	}
+}
 
 istream& operator>>(istream& in, tMatriz& m) {
 	char aux;
@@ -39,8 +48,10 @@ ostream& operator<<(ostream& out, tMatriz& m) {
 	for (int i = 0; i < m.c; ++i) {
 		out << " -";
 	}
+	out << " ";
 	out << "\n";
 	for (int i = 0; i < m.f; ++i) {
+		cout << " ";
 		for (int j = 0; j < m.c; ++j) {
 			if (m.matriz[i][j].sol)
 				out << m.matriz[i][j].c << " ";
@@ -52,62 +63,50 @@ ostream& operator<<(ostream& out, tMatriz& m) {
 	for (int i = 0; i < m.c; ++i) {
 		out << " -";
 	}
-	out << "\n";
+	out << " " << endl;
 	return out;
 }
 
-bool dentroPlano(const tMatriz& m, int x, int y) {
-	return (x >= 0 && x < m.f && y >= 0 && y < m.c);
-}
-
-bool encontrarPalabra(tMatriz& m, string palabra, int x, int y) {
-	bool dir = false;
-	int d = 0;
-	while (d < NUM_DIRECCIONES && !dir) {
-		// buscamos la dirección correcta
-		if (dentroPlano(m, x + dirs8[d].first, y + dirs8[d].second)) {
-			int destinoX = x + dirs8[d].first;
-			int destinoY = y + dirs8[d].second;
-			if (m.matriz[destinoX][destinoY].c == palabra[1])
-				dir = true;
-			else
-				++d;
-		}
-	}
-	int ind = 0;
-	// suponemos que hemos encontrado la palabra
+bool encuentraPalabra(tMatriz &m, string& palabra, int dir, int i, int j) {
+	//  k es el índice de la palabra
+	int k = 1;
 	bool encontrada = true;
-	if (dir) {
-		while (ind < palabra.length() && encontrada) {
-			int destinoX = x + (ind * dirs8[d].first);
-			int destinoY = y + (ind * dirs8[d].second);
-			if (m.matriz[destinoX][destinoY].c != palabra[ind])
-				encontrada = false;
-			else
-				++ind;
-		}
-		if (encontrada) {
-			// ahora ponemos sol = true en los tCaracteres que forman la palabra
-			for (int i = 0; i < palabra.length(); ++i)
-				m.matriz[x + (i * dirs8[d].first)][y + (i * dirs8[d].second)].sol = true;
-		}
-
+	while (encontrada && k < palabra.length()) {
+		char c = m.matriz[i + dirs8[dir].first * k][j + dirs8[dir].second * k].c;
+		encontrada = m.matriz[i + dirs8[dir].first * k][j + dirs8[dir].second * k].c == palabra[k];
+		++k;
 	}
-	
 	return encontrada;
 }
 
-void resolver(tMatriz& m, string palabra) {
+bool buscaPalabra(tMatriz &m, string &palabra, int i, int j) {
+	int dir = 0;
+	bool encontrada = false;
+	while (dir < NUM_DIRECCIONES && !encontrada) {
+		encontrada = encuentraPalabra(m, palabra, dir, i, j);
+		++dir;
+	}
+	// hay que guardar dir restarle el último que se le suma en el bucle
+	--dir;
+	if (encontrada) {
+		for (int k = 0; k < palabra.length(); ++k) {
+			m.matriz[i + dirs8[dir].first * k][j + dirs8[dir].second * k].sol = true;
+		}
+	}
+	return encontrada;
+}
+
+void resolver(tMatriz &m, string &palabra) {
 	bool encontrada = false;
 	int i = 0, j = 0;
-	while (!encontrada && i < m.f) {
-		while (!encontrada && j < m.c) {
-			// buscamos la primera letra
+	while (!encontrada && j < m.c) {
+		i = 0;
+		while (!encontrada && i < m.f) {
 			if (palabra[0] == m.matriz[i][j].c)
-				encontrada = encontrarPalabra(m, palabra, i, j);
-			++j;
+				encontrada = buscaPalabra(m, palabra, i, j);
+			++i;
 		}
-		++i;
+		++j;
 	}
 }
 
@@ -117,22 +116,27 @@ void resuelveCaso() {
 	string palabra;
 	char aux;
 
+	//inicializamos matriz
+	inicializar(m);
+
 	// lectura de matriz
 	cin >> m;
-	// cada palabra se procesa en cada momento
-	cin >> n;
-	for (int i = 0; i < n; ++i) {
+	if (m.f != 0 && m.c != 0) {
+		// cada palabra se procesa en cada momento
+		cin >> n;
 		cin.get(aux);
-		getline(cin, palabra);
-		resolver(m, palabra);
+		for (int i = 0; i < n; ++i) {
+			getline(cin, palabra);
+			resolver(m, palabra);
+		}
+		cout << m << endl;
 	}
-	cout << m;
 }
 
 int main() {
 	// ajustes para que cin extraiga directamente de un fichero
 #ifndef DOMJUDGE
-	std::ifstream in("sample-13.in");
+	std::ifstream in("sample-13.1.in");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
 	std::ofstream out("datos.out");
 	auto coutbuf = std::cout.rdbuf(out.rdbuf());

@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{11965B2E-0A39-4F36-A5A8-A97C7E29C673}</ProjectGuid>
-    <RootNamespace>PrMinero</RootNamespace>
+    <ProjectGuid>{6602ECFA-91B3-4E8D-9867-F4B924DD4961}</ProjectGuid>
+    <RootNamespace>P14ColeccionDeFotos</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,19 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="juego.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mina.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="juego.h" />
-    <ClInclude Include="mina.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="movimientos.txt" />
-    <Text Include="movimientos2.txt" />
-    <Text Include="movimientos3.txt" />
-    <Text Include="movimientos4.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

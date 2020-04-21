@@ -1,3 +1,7 @@
+// Autor/a: Estibaliz Zubimendi Solaguren
+// email: estizubi@ucm.es
+// Compilador: Visual Studio 2019
+// Nombre del problema: Práctica minero V1
 #pragma once
 #include "mina.h"
 typedef enum tTecla { ARRIBA, ABAJO, DCHA, IZDA, SALIR, NADA, TNT };

@@ -132,7 +132,7 @@ void resuelveCaso() {
 int main() {
 	// ajustes para que cin extraiga directamente de un fichero
 #ifndef DOMJUDGE
-	std::ifstream in("sample-08.1.in");
+	std::ifstream in("sample-08.2.in");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
 	std::ofstream out("datos.out");
 	auto coutbuf = std::cout.rdbuf(out.rdbuf());

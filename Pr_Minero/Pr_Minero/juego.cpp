@@ -1,5 +1,10 @@
+// Autor/a: Estibaliz Zubimendi Solaguren
+// email: estizubi@ucm.es
+// Compilador: Visual Studio 2019
+// Nombre del problema: Práctica minero V1
 #include "juego.h"
 
+const int ULTIMO_NIVEL = 4;
 const int NUM_DIRECCIONES = 4;
 const int NUM_DIR_DINAMITA = 8;
 const pair<int, int> tdirs4[NUM_DIRECCIONES] = { {-1,0},{1,0},{0,1},{0,-1} };
@@ -43,12 +48,18 @@ void lanzamientoDinamita(tJuego& juego) {
 int menuEscala(tJuego& juego) {
 	int opEscala;
 	// primer menú
+	cout << "----------\n";
+	cout << "| ESCALA |\n";
+	cout << "----------\n";
 	cout << "1. Jugar partida a escala 1:1.\n";
 	cout << "2. Jugar partida a escala 1:3.\n";
 	cout << "3. Salir.\n";
 	cin >> opEscala;
 	while (opEscala < 1 || opEscala > 3 || !cin) {
 		system("cls");
+		cout << "----------\n";
+		cout << "| ESCALA |\n";
+		cout << "----------\n";
 		cout << "1. Jugar partida a escala 1:1.\n";
 		cout << "2. Jugar partida a escala 1:3.\n";
 		cout << "3. Salir.\n";
@@ -69,16 +80,26 @@ int menuEscala(tJuego& juego) {
 	return opEscala;
 }
 
-int menuMovimientos(tJuego& juego, string &ficheroMovimientos) {
+int menuMovimientos(tJuego& juego, ifstream &movimientos) {
 	int opMovimientos;
+	string ficheroMovimientos;
+	// cerrar el txt anterior
+	if(movimientos.is_open())
+		movimientos.close();
 
 	// segundo menú
+	cout << "---------------\n";
+	cout << "| MOVIMIENTOS |\n";
+	cout << "---------------\n";
 	cout << "1. Introducir movimientos por teclado.\n";
 	cout << "2. Introducir movimientos por fichero.\n";
 	cout << "0. Salir.\n";
 	cin >> opMovimientos;
 	while (opMovimientos < 0 || opMovimientos > 2 || !cin) {
 		system("cls");
+		cout << "---------------\n";
+		cout << "| MOVIMIENTOS |\n";
+		cout << "---------------\n";
 		cout << "1. Introducir movimientos por teclado.\n";
 		cout << "2. Introducir movimientos por fichero.\n";
 		cout << "0. Salir.\n";
@@ -94,7 +115,9 @@ int menuMovimientos(tJuego& juego, string &ficheroMovimientos) {
 		juego.introMovimientos = 2;
 		system("cls");
 		cout << "Introduzca el nombre del fichero de movimientos: ";
+		cin.sync();
 		cin >> ficheroMovimientos;
+		movimientos.open(ficheroMovimientos);
 		system("cls");
 		break;
 	case 0:
@@ -106,11 +129,17 @@ int menuMovimientos(tJuego& juego, string &ficheroMovimientos) {
 int menuNivel(tJuego& juego) {
 	int opNivel;
 	// menú que aparece después de pasarse un nivel
+	cout << "---------\n";
+	cout << "| NIVEL |\n";
+	cout << "---------\n";
 	cout << "1. Jugar siguiente nivel.\n";
 	cout << "0. Salir.\n";
 	cin >> opNivel;
 	while (opNivel < 0 || opNivel > 1 || !cin) {
 		system("cls");
+		cout << "---------\n";
+		cout << "| NIVEL |\n";
+		cout << "---------\n";
 		cout << "1. Jugar siguiente nivel.\n";
 		cout << "0. Salir.\n";
 		cin >> opNivel;
@@ -271,18 +300,21 @@ void caidaPiedra(tJuego& juego, int f, int c) {
 	int n = 0;
 	// mientras la posición en la que estemos haya una piedra o una gema
 	// y estemos dentro del plano
-	while ((juego.mina.plano[f + n][c] == PIEDRA || juego.mina.plano[f + n][c] == GEMA) 
-		&& dentroPlano(juego.mina, f + n, c)) {
-		// mientras la siguiente posición (la de abajo) esté libre
-		// y estemos dentro del plano
-		n = 0;
-		while (juego.mina.plano[f + n + 1][c] == LIBRE && dentroPlano(juego.mina, f + n + 1, c)) {
-			// ponemos una posición más abajo la piedra/gema
-			juego.mina.plano[f + n + 1][c] = juego.mina.plano[f + n][c];
-			// ponemos libre la posición actual
-			juego.mina.plano[f + n][c] = LIBRE;
-			dibujar(juego);
-			++n;
+	if (dentroPlano(juego.mina, f + n, c)) {
+		while (juego.mina.plano[f + n][c] == PIEDRA || juego.mina.plano[f + n][c] == GEMA) {
+			// mientras la siguiente posición (la de abajo) esté libre
+			// y estemos dentro del plano
+			n = 0;
+			if (dentroPlano(juego.mina, f + n + 1, c)) {
+				while (juego.mina.plano[f + n + 1][c] == LIBRE) {
+					// ponemos una posición más abajo la piedra/gema
+					juego.mina.plano[f + n + 1][c] = juego.mina.plano[f + n][c];
+					// ponemos libre la posición actual
+					juego.mina.plano[f + n][c] = LIBRE;
+					dibujar(juego);
+					++n;
+				}
+			}
 		}
 	}
 }
@@ -341,6 +373,10 @@ void leerMovimiento(tJuego& juego, ifstream &movimientos) {
 		break;
 	case 2:
 		movimientos >> tecla;
+		if (!movimientos) {
+			juego.estadoMinero = FRACASO;
+			break;
+		}
 		switch (tecla) {
 		case ARRIBA:
 			hacerMovimiento(juego, ARRIBA);
@@ -369,12 +405,11 @@ void leerMovimiento(tJuego& juego, ifstream &movimientos) {
 bool jugar(tJuego& juego) {
 	ifstream archivo, movimientos;
 	int escala, introMovimientos;
-	string nombreFicheroMovimientos;
 
 	// si el jugador escoge la opción salir, el programa finaliza
 	if (menuEscala(juego) == 3)
 		return 0;
-	if (menuMovimientos(juego, nombreFicheroMovimientos) == 0)
+	if (menuMovimientos(juego, movimientos) == 0)
 		return 0;
 
 	if (!cargarJuego(juego, juego.nivel))
@@ -382,9 +417,7 @@ bool jugar(tJuego& juego) {
 	else
 		dibujar(juego);
 
-	movimientos.open(nombreFicheroMovimientos);
-
-	while (juego.nivel < 4) {
+	while (juego.nivel < ULTIMO_NIVEL) {
 		while (juego.estadoMinero == EXPLORANDO) {
 			dibujar(juego);
 			leerMovimiento(juego, movimientos);
@@ -396,7 +429,7 @@ bool jugar(tJuego& juego) {
 				return 0;
 			if (menuEscala(juego) == 3)
 				return 0;
-			if (menuMovimientos(juego, nombreFicheroMovimientos) == 0)
+			if (menuMovimientos(juego, movimientos) == 0)
 				return 0;
 			cargarJuego(juego, juego.nivel);
 			dibujar(juego);
@@ -406,13 +439,15 @@ bool jugar(tJuego& juego) {
 			return 0;
 		}
 	} 
-	if (juego.nivel == 4) {
+	if (juego.nivel == ULTIMO_NIVEL) {
 		cargarJuego(juego, juego.nivel);
 		while (juego.estadoMinero == EXPLORANDO) {
 			leerMovimiento(juego, movimientos);
 			dibujar(juego);
 		}
 	}
+	// para cerrar el flujo del último nivel
 	movimientos.close();
+
 	return false;
 }
