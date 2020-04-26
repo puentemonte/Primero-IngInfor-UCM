@@ -1,7 +1,7 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador: Visual Studio 2019
-// Nombre del problema: Práctica minero V1
+// Nombre del problema: Práctica minero v1
 #include "mina.h"
 #include "juego.h"
 
@@ -19,7 +19,7 @@ int main() {
 		cout << "| GAME OVER :( |\n";
 		cout << "----------------\n";
 	}
-	if (juego.estadoMinero == EXITO) {
+	if (juego.estadoMinero == EXITO || juego.estadoMinero == ABANDONO) {
 		cout << "-----------------\n";
 		cout << "| HASTA OTRA :) |\n";
 		cout << "-----------------\n";

@@ -1,11 +1,12 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador: Visual Studio 2019
-// Nombre del problema: Práctica minero V1
+// Nombre del problema: Práctica minero v1
 #pragma once
 #include "mina.h"
-typedef enum tTecla { ARRIBA, ABAJO, DCHA, IZDA, SALIR, NADA, TNT };
-typedef enum tEstado {EXPLORANDO, EXITO, ABANDONO, FRACASO};
+const int ULTIMO_NIVEL = 4;
+typedef enum { ARRIBA, ABAJO, DCHA, IZDA, SALIR, NADA, TNT } tTecla;
+typedef enum {EXPLORANDO, EXITO, ABANDONO, FRACASO} tEstado;
 typedef struct {
 	tMina mina;
 	tEstado estadoMinero = EXPLORANDO;

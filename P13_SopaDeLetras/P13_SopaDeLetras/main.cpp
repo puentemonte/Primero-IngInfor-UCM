@@ -34,12 +34,10 @@ istream& operator>>(istream& in, tMatriz& m) {
 	char aux;
 
 	in >> m.f >> m.c;
-	in.get(aux);
 	for (int i = 0; i < m.f; ++i) {
 		for (int j = 0; j < m.c; ++j) {
-			in.get(m.matriz[i][j].c);
+			in >> m.matriz[i][j].c;
 		}
-		in.get(aux);
 	}
 	return in;
 }
@@ -124,9 +122,8 @@ void resuelveCaso() {
 	if (m.f != 0 && m.c != 0) {
 		// cada palabra se procesa en cada momento
 		cin >> n;
-		cin.get(aux);
 		for (int i = 0; i < n; ++i) {
-			getline(cin, palabra);
+			cin >> palabra;
 			resolver(m, palabra);
 		}
 		cout << m << endl;

@@ -1,7 +1,7 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador: Visual Studio 2019
-// Nombre problema: Colección de fotos
+// Nombre problema: Ordenación con vectores de punteros
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -14,12 +14,11 @@ typedef struct {
 	string titulo, tema;
 	int tMatriz[MAX][MAX];
 }tFoto;
-typedef tFoto tListaFotos[TAM];
 
-typedef tFoto *tPtrFoto;
+typedef tFoto* tPtrFoto;
 typedef tPtrFoto tPunteros[TAM];
 
-void ordenarPorTitulo(tPunteros &punteros, int total) {
+void ordenarPorTitulo(tPunteros& punteros, int total) {
 	int pos;
 	tFoto* tmp = NULL;
 	for (int i = 1; i < total; ++i) {
@@ -49,7 +48,6 @@ void ordenarPorTema(tPunteros& punteros, int total) {
 
 bool resuelveCaso() {
 	tPunteros ptrTitulo, ptrTema;
-	tListaFotos lista_fotos;
 
 	char aux;
 	int n = 0;
@@ -57,20 +55,19 @@ bool resuelveCaso() {
 	cin.get(aux);
 	if (n == 0)
 		return false;
-	for (int i = 0; i < n; ++i)
-		getline(cin, lista_fotos[i].titulo);
-	for (int i = 0; i < n; ++i)
-		getline(cin, lista_fotos[i].tema);
 
+	for (int i = 0; i < n; ++i) {
+		ptrTitulo[i] = new(tFoto);
+		getline(cin, ptrTitulo[i]->titulo);
+	}
+	for (int i = 0; i < n; ++i) {
+		getline(cin, ptrTitulo[i]->tema);
+	}
 	for (int i = 0; i < n; ++i)
 		for (int j = 0; j < MAX; ++j)
 			for (int k = 0; k < MAX; ++k)
-				lista_fotos[i].tMatriz[j][k] = 3;
-		
+				ptrTitulo[i]->tMatriz[j][k] = 3;
 	
-
-	for (int i = 0; i < n; ++i)
-		ptrTitulo[i] = &lista_fotos[i];
 	ordenarPorTitulo(ptrTitulo, n);
 	for (int i = 0; i < n; ++i) {
 		ptrTema[i] = ptrTitulo[i];
@@ -84,13 +81,16 @@ bool resuelveCaso() {
 		cout << ptrTema[i]->tema << " - " << ptrTema[i]->titulo << endl;
 	}
 	cout << endl;
+	for (int i = 0; i < n; ++i) {
+		delete(ptrTitulo[i]);
+	}
 	return true;
 }
 
 int main() {
 	// ajustes para que cin extraiga directamente de un fichero
 #ifndef DOMJUDGE
-	std::ifstream in("sample-14.1.in");
+	std::ifstream in("sample-15.1.in");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
 	std::ofstream out("datos.out");
 	auto coutbuf = std::cout.rdbuf(out.rdbuf());

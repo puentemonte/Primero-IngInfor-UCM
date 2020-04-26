@@ -1,7 +1,7 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador: Visual Studio 2019
-// Nombre del problema: Práctica minero V1
+// Nombre del problema: Práctica minero v1
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -13,7 +13,7 @@
 using namespace std;
 
 const int MAX = 50;
-typedef enum tCasilla {LIBRE, TIERRA, GEMA, PIEDRA, MURO, DINAMITA, SALIDA, MINERO, VACIO };
+typedef enum {LIBRE, TIERRA, GEMA, PIEDRA, MURO, DINAMITA, SALIDA, MINERO, VACIO } tCasilla;
 typedef tCasilla tPlano[MAX][MAX];
 typedef struct {
 	tPlano plano;
@@ -34,6 +34,9 @@ void cargar_mina(ifstream& fichero, tMina& mina);
 void dibujar1_1(const tMina& mina);
 //muestra por pantalla el plano en escala 3:1
 void dibujar1_3(const tMina& mina);
+// función auxiliar para no repetir mucho código en dibujar1_3
+// con 2 for asigna el color adecuado a cada casilla
+void plano_colores_aux(tPlanoColores& plano_colores, int color, int i, int j);
 //dibuja las casillas aumentadas tres veces. Lla casilla sirve para actualizar 
 //el plano de caracteres y colores en las coordenadas i, j
 void dibuja3x3(tCasilla casilla, tPlanoCaracteres &caracteres, tPlanoColores &colores, int i, int j);

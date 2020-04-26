@@ -1,7 +1,7 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador: Visual Studio 2019
-// Nombre del problema: Práctica minero V1
+// Nombre del problema: Práctica minero v1
 #include "mina.h"
 
 void inicializarMina(tMina& mina) {
@@ -147,6 +147,14 @@ void dibuja3x3(tCasilla casilla, tPlanoCaracteres& caracteres, tPlanoColores& co
 	}
 }
 
+void plano_colores_aux(tPlanoColores &plano_colores, int color, int i, int j) {
+	for (int k = 0; k < 3; ++k) {
+		for (int l = 0; l < 3; ++l) {
+			plano_colores[i * 3 + k][j * 3 + l] = color;
+		}
+	}
+}
+
 void dibujar1_3(const tMina& mina) {
 	tPlanoCaracteres plano_caracteres;
 	tPlanoColores plano_colores;
@@ -172,15 +180,7 @@ void dibujar1_3(const tMina& mina) {
 				plano_caracteres[i * 3 + 2][j * 3 + 1] = 'A';
 				plano_caracteres[i * 3 + 2][j * 3 + 2] = 'M';
 				//ahora el color
-				plano_colores[i * 3][j * 3] = 2;
-				plano_colores[i * 3][j * 3 + 1] = 2;
-				plano_colores[i * 3][j * 3 + 2] = 2;
-				plano_colores[i * 3 + 1][j * 3] = 2;
-				plano_colores[i * 3 + 1][j * 3 + 1] = 2;
-				plano_colores[i * 3 + 1][j * 3 + 2] = 2;
-				plano_colores[i * 3 + 2][j * 3] = 2;
-				plano_colores[i * 3 + 2][j * 3 + 1] = 2;
-				plano_colores[i * 3 + 2][j * 3 + 2] = 2;
+				plano_colores_aux(plano_colores, 2, i, j);
 				break;
 			case DINAMITA:
 				plano_caracteres[i * 3][j * 3] = 'D';
@@ -192,15 +192,7 @@ void dibujar1_3(const tMina& mina) {
 				plano_caracteres[i * 3 + 2][j * 3] = 'T';
 				plano_caracteres[i * 3 + 2][j * 3 + 1] = 'A';
 				plano_caracteres[i * 3 + 2][j * 3 + 2] = '!';
-				plano_colores[i * 3][j * 3] = 9;
-				plano_colores[i * 3][j * 3 + 1] = 9;
-				plano_colores[i * 3][j * 3 + 2] = 9;
-				plano_colores[i * 3 + 1][j * 3] = 9;
-				plano_colores[i * 3 + 1][j * 3 + 1] = 9;
-				plano_colores[i * 3 + 1][j * 3 + 2] = 9;
-				plano_colores[i * 3 + 2][j * 3] = 9;
-				plano_colores[i * 3 + 2][j * 3 + 1] = 9;
-				plano_colores[i * 3 + 2][j * 3 + 2] = 9;
+				plano_colores_aux(plano_colores, 9, i, j);
 				break;
 			case SALIDA:
 				plano_caracteres[i * 3][j * 3] = 'S';
@@ -212,15 +204,7 @@ void dibujar1_3(const tMina& mina) {
 				plano_caracteres[i * 3 + 2][j * 3] = 'E';
 				plano_caracteres[i * 3 + 2][j * 3 + 1] = 'S';
 				plano_caracteres[i * 3 + 2][j * 3 + 2] = 'C';
-				plano_colores[i * 3][j * 3] = 1;
-				plano_colores[i * 3][j * 3 + 1] = 1;
-				plano_colores[i * 3][j * 3 + 2] = 1;
-				plano_colores[i * 3 + 1][j * 3] = 1;
-				plano_colores[i * 3 + 1][j * 3 + 1] = 1;
-				plano_colores[i * 3 + 1][j * 3 + 2] = 1;
-				plano_colores[i * 3 + 2][j * 3] = 1;
-				plano_colores[i * 3 + 2][j * 3 + 1] = 1;
-				plano_colores[i * 3 + 2][j * 3 + 2] = 1;
+				plano_colores_aux(plano_colores, 1, i, j);
 				break;
 			case MINERO:
 				plano_caracteres[i * 3][j * 3] = 'M';
@@ -232,15 +216,7 @@ void dibujar1_3(const tMina& mina) {
 				plano_caracteres[i * 3 + 2][j * 3] = 'R';
 				plano_caracteres[i * 3 + 2][j * 3 + 1] = 'O';
 				plano_caracteres[i * 3 + 2][j * 3 + 2] = '!';
-				plano_colores[i * 3][j * 3] = 7;
-				plano_colores[i * 3][j * 3 + 1] = 7;
-				plano_colores[i * 3][j * 3 + 2] = 7;
-				plano_colores[i * 3 + 1][j * 3] = 7;
-				plano_colores[i * 3 + 1][j * 3 + 1] = 7;
-				plano_colores[i * 3 + 1][j * 3 + 2] = 7;
-				plano_colores[i * 3 + 2][j * 3] = 7;
-				plano_colores[i * 3 + 2][j * 3 + 1] = 7;
-				plano_colores[i * 3 + 2][j * 3 + 2] = 7;
+				plano_colores_aux(plano_colores, 7, i, j);
 			}
 		}
 	}

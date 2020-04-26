@@ -1,10 +1,9 @@
 // Autor/a: Estibaliz Zubimendi Solaguren
 // email: estizubi@ucm.es
 // Compilador: Visual Studio 2019
-// Nombre del problema: Práctica minero V1
+// Nombre del problema: Práctica minero v1
 #include "juego.h"
 
-const int ULTIMO_NIVEL = 4;
 const int NUM_DIRECCIONES = 4;
 const int NUM_DIR_DINAMITA = 8;
 const pair<int, int> tdirs4[NUM_DIRECCIONES] = { {-1,0},{1,0},{0,1},{0,-1} };
@@ -18,11 +17,11 @@ void lanzamientoDinamita(tJuego& juego) {
 	if (juego.mina.plano[f + 1][c] != LIBRE) {
 		juego.estadoMinero = FRACASO;
 		juego.mina.plano[f][c] = LIBRE;
-		for (int dir = 0; dir < 8; ++dir) {
-			if (dentroPlano(juego.mina, f + dirs8[dir].first, c + dirs8[dir].second)) {
-				juego.mina.plano[f + dirs8[dir].first][c + dirs8[dir].second] = LIBRE;
-			}
-		}
+		for (int dir = 0; dir < 8; ++dir)
+			if (dentroPlano(juego.mina, f + dirs8[dir].first, c + dirs8[dir].second))
+				if(juego.mina.plano[f + dirs8[dir].first][c + dirs8[dir].second] != SALIDA)
+					juego.mina.plano[f + dirs8[dir].first][c + dirs8[dir].second] = LIBRE;
+			
 	}
 
 	else {
@@ -34,14 +33,14 @@ void lanzamientoDinamita(tJuego& juego) {
 			dibujar(juego);
 			++f;
 		}
-		for (int dir = 0; dir < 8; ++dir) {
+		for (int dir = 0; dir < 8; ++dir)
 			if (dentroPlano(juego.mina, f + dirs8[dir].first, c + dirs8[dir].second)) {
 				// comprobamos si el minero estaba en una posición adyacente
 				if (juego.mina.plano[f + dirs8[dir].first][c + dirs8[dir].second] == MINERO)
 					juego.estadoMinero = FRACASO;
-				juego.mina.plano[f + dirs8[dir].first][c + dirs8[dir].second] = LIBRE;
+				else if(juego.mina.plano[f + dirs8[dir].first][c + dirs8[dir].second] != SALIDA)
+					juego.mina.plano[f + dirs8[dir].first][c + dirs8[dir].second] = LIBRE;
 			}
-		}
 	}
 }
 
@@ -118,6 +117,16 @@ int menuMovimientos(tJuego& juego, ifstream &movimientos) {
 		cin.sync();
 		cin >> ficheroMovimientos;
 		movimientos.open(ficheroMovimientos);
+		// si el usuario introduce un el nombre de un fichero que no existe
+		if (!movimientos.is_open()) {
+			while (!movimientos.is_open()) {
+				system("cls");
+				cout << "El fichero no existe, por favor intentalo de nuevo: ";
+				cin.sync();
+				cin >> ficheroMovimientos;
+				movimientos.open(ficheroMovimientos);
+			}
+		}
 		system("cls");
 		break;
 	case 0:
@@ -207,8 +216,11 @@ void dibujar(const tJuego& juego) {
 		dibujar1_1(juego.mina);
 	else
 		dibujar1_3(juego.mina);
+	cout << "-----------\n";
+	cout << "| NIVEL " << juego.nivel << " |\n";
+	cout << "-----------\n";
 	cout << "Gemas totales recogidas: " << juego.gemasRecogidas << "\n";
-	cout << "Número de movimientos: " << juego.numMov << "\n";
+	cout << "Numero de movimientos: " << juego.numMov << "\n";
 	cout << "Dinamitas usadas: " << juego.numTnt << "\n";
 }
 
