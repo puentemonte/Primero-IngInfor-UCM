@@ -1,0 +1,11 @@
+A obj1 3
+A obj2 2
+R obj1 2
+L
+A obj1 4
+A obj7 1
+A obj3 5
+R obj7 4
+R obj3 2
+L
+F
