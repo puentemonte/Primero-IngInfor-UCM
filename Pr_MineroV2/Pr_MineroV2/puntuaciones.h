@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ typedef struct {
 	// ptosMina = ancho * alto + A * numGemas - numMovimientos - B * numDinamitas
 }tDatosMina;
 typedef struct {
+	string nombre;
 	int punt_total;
 	int minasRecorridas;
 	tDatosMina vMinasRecorridas[NUM_TOTAL_MINAS];
@@ -52,11 +54,7 @@ void destruir(tPuntuaciones& marcador);
 
 // busca un nombre en el array dinámico, devuelve true si lo encuentra y la pos
 // si no lo encuentra devuelve la pos donde debería estar (final?)
-// --CONDICIONES--
-// los datos del array están ordenados por orden alfabético
-// busqueda binaria iterativa (recursión?)
 bool buscar(const string& nombre, const tPuntuaciones& marcador, int& pos);
 
-// inserta ordenadamente en pos un nuevo jugador (al final o busca la posición?)
-// al realizar la inserción (ANTES) comprobar si numJugadores == capacidad -> aumentar
+// inserta ordenadamente en pos un nuevo jugador
 void insertar(tPuntuaciones& marcador, string const& nombre, int pos);

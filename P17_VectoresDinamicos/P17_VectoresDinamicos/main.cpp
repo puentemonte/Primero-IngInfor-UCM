@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 const int TAM_INICIAL = 3;
@@ -84,14 +85,17 @@ void resuelveCaso() {
 				if (a == 'A')
 					lista.arrayDinam[pos].unidades += num;
 				// restamos las unidades de un producto existente
-				else if (a == 'R') {
-					// si las unidades que le vamos a restar son mayores de las que hay, ponemos a 0
-					if (lista.arrayDinam[pos].unidades < num)
-						lista.arrayDinam[pos].unidades = 0;
-					else
-						// restamos la cantidad en caso contrario
-						lista.arrayDinam[pos].unidades -= num;
-				}
+				//else if (a == 'R') {
+				//	// si las unidades que le vamos a restar son mayores de las que hay, ponemos a 0
+				//	if (lista.arrayDinam[pos].unidades < num)
+				//		lista.arrayDinam[pos].unidades = 0;
+				//	else
+				//		// restamos la cantidad en caso contrario
+				//		lista.arrayDinam[pos].unidades -= num;
+				//	
+				//}
+				else
+					lista.arrayDinam[pos].unidades = max(lista.arrayDinam[pos].unidades - num, 0);
 			}
 			// si el objeto no existe y le estamos sumando lo añadimos al array
 			else if (!encontrado(lista, nombre, pos) && a == 'A'){
