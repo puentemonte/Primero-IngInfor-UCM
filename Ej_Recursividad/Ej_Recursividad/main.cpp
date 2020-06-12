@@ -6,11 +6,19 @@
 #include <iostream>
 #include <string>
 using namespace std;
+const int N = 100;
 
 typedef struct {
     int cont = 0;
-    int array[100];
+    int array[N];
 }tLista;
+
+typedef int tArray[N];
+typedef struct {
+    tArray elementos;
+    int cont;
+} tStruct;
+
 
 typedef struct {
     int numero = 0, pot = 1;
@@ -63,6 +71,9 @@ bool iguales(const tLista& l, int pos);
 // Cuantos hay iguales al primero empezando desde el inicio
 int cuantosIguales(const tLista& l);
 int cuantosIguales2(const tLista& l, int pos, int num);
+
+// Búsqueda recursiva que devuelve si ha encontrado o no el elemento
+bool buscar(tStruct t, int buscado, int ini, int fin, int& pos);
 
 int main() {
     int uno;
@@ -122,9 +133,51 @@ int main() {
     cout << "Todos los elementos de las lista son iguales? " << iguales(cinco, 0) << "\n";
     cout << "Elementos iguales al primero: " << cuantosIguales(cinco) << "\n";
 
+    system("PAUSE");
+    system("cls");
+
+    tStruct t;
+    cout << "Cuantos elementos: ";
+    cin >> t.cont;
+    for (int i = 0; i < t.cont; ++i) {
+        cin >> t.elementos[i];
+    }
+    cout << "\n";
+    int n_buscado, pos = -1;
+    cout << "Que numero quieres buscar: ";
+    cin >> n_buscado;
+    if (buscar(t, n_buscado, 0, t.cont - 1, pos))
+        cout << "El elemento esta en la posicion ";
+    else
+        cout << "No encontrado pero estaria en la pos ";
+    cout << pos + 1 << "\n";
+
+    system("PAUSE");
+
     return 0;
 }
 
+bool buscar(tStruct t, int buscado, int ini, int fin, int& pos) {
+    int mitad = (ini + fin) / 2;
+    bool encontrado = false;
+    if (ini <= fin && !encontrado) {
+        mitad = (ini + fin) / 2;
+        if (buscado == t.elementos[mitad]) {
+            encontrado = true;
+            pos = ini;
+        }
+        else if (buscado < t.elementos[mitad])
+            encontrado = buscar(t, buscado, ini, mitad - 1, pos);
+        else
+            encontrado = buscar(t, buscado, mitad + 1, fin, pos);
+    }
+    else {
+        if (!encontrado)
+            pos = ini;
+    }
+    return encontrado;
+}
+ 
 int cuantosIguales2(const tLista& l, int pos, int num) {
     int sol = 0;
     if (pos == l.cont)
@@ -148,11 +201,14 @@ int cuantosIguales(const tLista& l) {
 
 bool iguales(const tLista& l, int pos) {
     bool same = true;
-    if (pos < l.cont) {
-        if (l.array[pos] != l.array[pos - 1]) {
+    if (pos == l.cont)
+        same = true;
+    else {
+        if (pos > 0 && l.array[pos] != l.array[pos - 1])
             same = false;
-        } 
-        iguales(l, pos + 1);
+        else
+            same = iguales(l, pos + 1);
+        
     }
     return same;
 }
